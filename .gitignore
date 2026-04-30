@@ -3,6 +3,7 @@ data/original
 data/train_data
 data/val_data
 data/test_data
+uv.lock
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
