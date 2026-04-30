@@ -1,11 +1,12 @@
 import tensorflow as tf
 from pathlib import Path
-from tensorflow.keras.applications import MobileNetV3
+from tensorflow.keras.applications import MobileNetV3Small
 from tensorflow.keras.models import Model
 from tensorflow.keras.layers import Dense, Dropout, GlobalAveragePooling2D, Input, RandomRotation, RandomZoom, RandomContrast
 from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.models import load_model
+from tensorflow.keras.applications.mobilenet_v3 import preprocess_input
 
 # === Configuration ===
 REPO_ROOT = Path(__file__).resolve().parents[3]
@@ -52,13 +53,13 @@ data_augmentation = tf.keras.Sequential([
     RandomContrast(0.1)              # Contrast adjustment (replaces brightness)
 ], name="augmentation_layer")
 
-# === Model construction: Transfer Learning with MobileNetV2 ===
-base_model = MobileNetV3(input_shape=(224, 224, 3), include_top=False, weights='imagenet')
+# === Model construction: Transfer Learning with MobileNetV3Small ===
+base_model = MobileNetV3Small(input_shape=(224, 224, 3), include_top=False, weights='imagenet')
 base_model.trainable = False  # freeze lower layers
 
 inputs = Input(shape=(224, 224, 3))
 x = data_augmentation(inputs)  # Augmentation is applied during training, ignored during inference
-x = tf.keras.applications.mobilenet_v3.preprocess_input(x) # MobileNetV3 Preprocessing
+x = preprocess_input(x) # MobileNetV3 Preprocessing
 x = base_model(x)
 x = GlobalAveragePooling2D()(x)
 x = Dense(512, activation='relu')(x)
