@@ -17,7 +17,7 @@ TEST_DIR = REPO_ROOT / "data" / "test_data"
 SAVE_MODEL_PATH = REPO_ROOT / "models" / "eurosat_mobilenetv3_freezed.keras"
 
 IMG_SIZE = (224, 224)
-BATCH_SIZE = 32
+BATCH_SIZE = 64
 
 SEED = 467
 
