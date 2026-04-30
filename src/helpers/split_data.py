@@ -14,7 +14,7 @@ SPLIT_RATIOS = {
 REPO_ROOT = Path(__file__).resolve().parents[2]
 
 # Define Paths
-SOURCE_DIR = REPO_ROOT / "data"
+SOURCE_DIR = REPO_ROOT / "data" / "original"
 OUTPUT_DIRS = {
     "train": REPO_ROOT / "data" / "train_data",
     "val": REPO_ROOT / "data" / "val_data",
