@@ -14,7 +14,7 @@ REPO_ROOT = Path(__file__).resolve().parents[3]
 TRAIN_DIR = REPO_ROOT / "data" / "train_data"
 VAL_DIR = REPO_ROOT / "data" / "val_data"
 TEST_DIR = REPO_ROOT / "data" / "test_data"
-SAVE_MODEL_PATH = REPO_ROOT / "models" / "eurosat_mobilenetv3_freezed.h5"
+SAVE_MODEL_PATH = REPO_ROOT / "models" / "eurosat_mobilenetv3_freezed.keras"
 
 IMG_SIZE = (224, 224)
 BATCH_SIZE = 32
