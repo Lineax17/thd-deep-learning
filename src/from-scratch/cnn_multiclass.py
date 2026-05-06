@@ -2,66 +2,44 @@ import tensorflow as tf
 from tensorflow.keras import layers, models
 from tensorflow.keras.callbacks import ModelCheckpoint, EarlyStopping
 from pathlib import Path
+import sys
 
-# ==========================================
-# 1. Pfade mit pathlib definieren
-# ==========================================
-# Wo befindet sich dieses Skript? (src/from-scratch/)
-CURRENT_DIR = Path(__file__).resolve().parent
-ROOT_DIR = CURRENT_DIR.parent.parent
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-# Exakte Pfade zu den Datenordnern
-DATA_DIR = ROOT_DIR / "data"
-TRAIN_DIR = DATA_DIR / "train_data"
-VAL_DIR = DATA_DIR / "val_data"
-TEST_DIR = DATA_DIR / "test_data"
+from src.helpers.project_constants import (
+    TRAIN_DIR, VAL_DIR, TEST_DIR,
+    IMG_HEIGHT, IMG_WIDTH, BATCH_SIZE, EPOCHS,
+    BEST_MULTICLASS_SCRATCH_MODEL, FINAL_MULTICLASS_SCRATCH_MODEL
+)
 
-# Speicherort für Modelle (ich wähle den models-Ordner in deinem from-scratch Verzeichnis)
-MODEL_DIR = ROOT_DIR / "models"
-
-# ==========================================
-# 2. Konfiguration und Hyperparameter
-# ==========================================
-IMG_HEIGHT = 64
-IMG_WIDTH = 64
-BATCH_SIZE = 32
-EPOCHS = 20
-
-# ==========================================
-# 3. Daten laden (Automatisch)
-# ==========================================
-print("Lade Trainingsdaten...")
-# Wir wandeln die Path-Objekte mit str() in Strings um, um 100% kompatibel mit Keras zu sein
+print("[INFO] Loading training data...")
 train_dataset = tf.keras.utils.image_dataset_from_directory(
     str(TRAIN_DIR),
     image_size=(IMG_HEIGHT, IMG_WIDTH),
     batch_size=BATCH_SIZE
 )
 
-print("Lade Validierungsdaten...")
+print("[INFO] Loading validation data...")
 val_dataset = tf.keras.utils.image_dataset_from_directory(
     str(VAL_DIR),
     image_size=(IMG_HEIGHT, IMG_WIDTH),
     batch_size=BATCH_SIZE
 )
 
-print("Lade Testdaten...")
+print("[INFO] Loading test data...")
 test_dataset = tf.keras.utils.image_dataset_from_directory(
     str(TEST_DIR),
     image_size=(IMG_HEIGHT, IMG_WIDTH),
     batch_size=BATCH_SIZE
 )
 
-# Performance-Optimierung
+# performance optimizations
 AUTOTUNE = tf.data.AUTOTUNE
 train_dataset = train_dataset.cache().prefetch(buffer_size=AUTOTUNE)
 val_dataset = val_dataset.cache().prefetch(buffer_size=AUTOTUNE)
 test_dataset = test_dataset.cache().prefetch(buffer_size=AUTOTUNE)
 
 
-# ==========================================
-# 4. Modellarchitektur definieren (From Scratch)
-# ==========================================
 def create_model():
     model = models.Sequential([
         # Rescaling: Pixelwerte von [0, 255] auf [0, 1] normalisieren
@@ -91,22 +69,14 @@ def create_model():
 model = create_model()
 model.summary()
 
-# ==========================================
-# 5. Modell kompilieren
-# ==========================================
 model.compile(
     optimizer='adam',
     loss=tf.keras.losses.SparseCategoricalCrossentropy(),
     metrics=['accuracy']
 )
 
-# ==========================================
-# 6. Callbacks konfigurieren
-# ==========================================
-# Checkpoint speichert in from-scratch/models/
-checkpoint_path = MODEL_DIR / "best_eurosat_cnn.keras"
 checkpoint_cb = ModelCheckpoint(
-    filepath=str(checkpoint_path),
+    filepath=str(BEST_MULTICLASS_SCRATCH_MODEL),
     save_best_only=True,
     monitor='val_accuracy'
 )
@@ -117,10 +87,7 @@ early_stopping_cb = EarlyStopping(
     monitor='val_loss'
 )
 
-# ==========================================
-# 7. Training & Evaluierung
-# ==========================================
-print("Starte Training...")
+print("[INFO] Starting training...")
 history = model.fit(
     train_dataset,
     validation_data=val_dataset,
@@ -128,11 +95,9 @@ history = model.fit(
     callbacks=[checkpoint_cb, early_stopping_cb]
 )
 
-print("Evaluiere Modell auf Testdaten...")
+print("[INFO] Evaluating on test data...")
 test_loss, test_acc = model.evaluate(test_dataset)
-print(f"Test Accuracy: {test_acc:.4f}")
+print(f"[INFO] Test Accuracy: {test_acc:.4f}")
 
-# Optional: Finale Version speichern
-final_model_path = MODEL_DIR / "final_eurosat_cnn.keras"
-model.save(str(final_model_path))
-print(f"Modell gespeichert unter: {final_model_path}")
+model.save(str(FINAL_MULTICLASS_SCRATCH_MODEL))
+print(f"[INFO] Model saved to: {FINAL_MULTICLASS_SCRATCH_MODEL}")
