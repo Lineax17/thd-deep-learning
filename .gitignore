@@ -4,8 +4,7 @@ data/train_data
 data/val_data
 data/test_data
 uv.lock
-eurosat_mobilenetv3_freezed.keras
-eurosat_mobilenetv3_unfreezed.keras
+*.keras
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
