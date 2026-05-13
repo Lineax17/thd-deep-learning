@@ -1,3 +1,4 @@
+import os
 import tensorflow as tf
 from pathlib import Path
 from tensorflow.keras.applications import MobileNetV3Small
@@ -10,14 +11,16 @@ from tensorflow.keras.applications.mobilenet_v3 import preprocess_input
 
 # === Configuration ===
 REPO_ROOT = Path(__file__).resolve().parents[3]
+MODEL_OUTPUT_DIR = Path(os.environ.get("MODEL_OUTPUT_DIR", REPO_ROOT / "models"))
+MODEL_OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 TRAIN_DIR = REPO_ROOT / "data" / "train_data"
 VAL_DIR = REPO_ROOT / "data" / "val_data"
 TEST_DIR = REPO_ROOT / "data" / "test_data"
-SAVE_MODEL_PATH = REPO_ROOT / "models" / "eurosat_multilabel_mobilenetv3_freezed.keras"
+SAVE_MODEL_PATH = MODEL_OUTPUT_DIR / "eurosat_multilabel_mobilenetv3_freezed.keras"
 
 IMG_SIZE = (224, 224)
-BATCH_SIZE = 64
+BATCH_SIZE = 32
 
 SEED = 467
 
