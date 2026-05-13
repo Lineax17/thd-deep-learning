@@ -31,7 +31,8 @@ def get_dataset(directory):
         image_size=IMG_SIZE,
         batch_size=BATCH_SIZE,
         label_mode='categorical',
-        shuffle=True
+        shuffle=True,
+        seed=SEED
     )
 
 train_ds = get_dataset(TRAIN_DIR)
