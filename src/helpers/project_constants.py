@@ -11,6 +11,11 @@ TRAIN_DIR = DATA_DIR / "train_data"
 VAL_DIR = DATA_DIR / "val_data"
 TEST_DIR = DATA_DIR / "test_data"
 
+# Binary classification directories
+BINARY_TRAIN_DIR = DATA_DIR / "binary_train_data"
+BINARY_VAL_DIR = DATA_DIR / "binary_val_data"
+BINARY_TEST_DIR = DATA_DIR / "binary_test_data"
+
 
 # Picture dimensions
 IMG_HEIGHT = 64
@@ -32,5 +37,8 @@ def get_class_names() -> list:
 # Paths to save models after training
 BEST_MULTICLASS_SCRATCH_MODEL = MODEL_DIR / "best_eurosat_cnn.keras"
 FINAL_MULTICLASS_SCRATCH_MODEL = MODEL_DIR / "final_eurosat_cnn.keras"
+
+BEST_BINARY_SCRATCH_MODEL = MODEL_DIR / "best_binary_cnn.keras"
+FINAL_BINARY_SCRATCH_MODEL = MODEL_DIR / "final_binary_cnn.keras"
 
 
