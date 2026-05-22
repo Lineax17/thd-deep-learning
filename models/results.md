@@ -4,6 +4,7 @@
 
 acc: 0.8183 | kein Overfitting
 
+```
 Epoch 1/20
 422/422 ━━━━━━━━━━━━━━━━━━━━ 6s 13ms/step - accuracy: 0.3230 - loss: 1.7305 - val_accuracy: 0.4676 - val_loss: 1.3913
 Epoch 2/20
@@ -47,11 +48,13 @@ Epoch 20/20
 [INFO] Evaluating on test data...
 254/254 ━━━━━━━━━━━━━━━━━━━━ 1s 4ms/step - accuracy: 0.8477 - loss: 0.4556
 [INFO] Test Accuracy: 0.8477
+```
 
 ## Binary classification
 
 acc: 0.9483 | kein Overfitting
 
+```
 Epoch 1/20
 165/165 ━━━━━━━━━━━━━━━━━━━━ 3s 13ms/step - accuracy: 0.8103 - loss: 0.3944 - val_accuracy: 0.8443 - val_loss: 0.3392
 Epoch 2/20
@@ -95,6 +98,7 @@ Epoch 20/20
 [INFO] Evaluating on test data...
 99/99 ━━━━━━━━━━━━━━━━━━━━ 0s 4ms/step - accuracy: 0.9435 - loss: 0.1456
 [INFO] Test Accuracy: 0.9435
+```
 
 Kein Overfitting in Versuch 1, da val_loss stetig sinkt und val_accuracy stetig steigt -> Netz zu klein? -> Mehr Schichten, mehr Neuronen?
 
@@ -104,6 +108,7 @@ Kein Overfitting in Versuch 1, da val_loss stetig sinkt und val_accuracy stetig 
 
 acc: 0.8115 | starkes Overfitting
 
+```
 Epoch 1/20
 422/422 ━━━━━━━━━━━━━━━━━━━━ 36s 82ms/step - accuracy: 0.5249 - loss: 1.4700 - val_accuracy: 0.2933 - val_loss: 2.5255
 Epoch 2/20
@@ -129,6 +134,7 @@ Epoch 11/20
 [INFO] Evaluating on test data...
 254/254 ━━━━━━━━━━━━━━━━━━━━ 5s 19ms/step - accuracy: 0.8115 - loss: 0.6826
 [INFO] Test Accuracy: 0.8115
+```
 
 Overfitting ab Epoche 7
 
@@ -136,6 +142,7 @@ Overfitting ab Epoche 7
 
 acc: 0.9483 | starkes Overfitting
 
+```
 Epoch 1/20
 165/165 ━━━━━━━━━━━━━━━━━━━━ 16s 85ms/step - accuracy: 0.8474 - loss: 0.4197 - val_accuracy: 0.6767 - val_loss: 1.3652
 Epoch 2/20
@@ -175,6 +182,7 @@ Epoch 18/20
 [INFO] Evaluating on test data...
 99/99 ━━━━━━━━━━━━━━━━━━━━ 2s 18ms/step - accuracy: 0.9232 - loss: 0.2761
 [INFO] Test Accuracy: 0.9232
+```
 
 Overfitting ab Epoche 5
 Bouncing von val_loss -> kleinere learning rate?
@@ -187,6 +195,7 @@ Netz viel zu groß in Versuch 2 -> In beiden Fällen massives Overfitting
 
 acc: 0.5680 | starkes Overfitting
 
+```
 Epoch 1/20
 422/422 ━━━━━━━━━━━━━━━━━━━━ 14s 31ms/step - accuracy: 0.4659 - loss: 1.5316 - val_accuracy: 0.3567 - val_loss: 1.8139
 Epoch 2/20
@@ -204,6 +213,7 @@ Epoch 7/20
 [INFO] Evaluating on test data...
 254/254 ━━━━━━━━━━━━━━━━━━━━ 2s 6ms/step - accuracy: 0.5680 - loss: 1.2453
 [INFO] Test Accuracy: 0.5680
+```
 
 Immer noch Overfitting -> Mehr Schichten, weniger Neuronen?
 
@@ -211,6 +221,7 @@ Immer noch Overfitting -> Mehr Schichten, weniger Neuronen?
 
 acc: 0.9378 | Overfitting
 
+```
 Epoch 1/20
 165/165 ━━━━━━━━━━━━━━━━━━━━ 6s 32ms/step - accuracy: 0.8406 - loss: 0.3898 - val_accuracy: 0.5238 - val_loss: 1.0957
 Epoch 2/20
@@ -240,6 +251,7 @@ Epoch 13/20
 [INFO] Evaluating on test data...
 99/99 ━━━━━━━━━━━━━━━━━━━━ 1s 6ms/step - accuracy: 0.9378 - loss: 0.1770
 [INFO] Test Accuracy: 0.9378
+```
 
 # Versuch 4
 
@@ -247,6 +259,7 @@ Epoch 13/20
 
 acc: 0.8883 | kein klares Overfitting -> gute Generalisierung
 
+```
 Epoch 1/20
 422/422 ━━━━━━━━━━━━━━━━━━━━ 26s 58ms/step - accuracy: 0.4027 - loss: 1.7315 - val_accuracy: 0.2226 - val_loss: 2.0773
 Epoch 2/20
@@ -290,6 +303,7 @@ Epoch 20/20
 [INFO] Evaluating on test data...
 254/254 ━━━━━━━━━━━━━━━━━━━━ 3s 12ms/step - accuracy: 0.8883 - loss: 0.4003
 [INFO] Test Accuracy: 0.8883
+```
 
 Deutlich besser als in Versuch 1 -> Annäherung an ein gutes Modell
 
@@ -297,6 +311,7 @@ Deutlich besser als in Versuch 1 -> Annäherung an ein gutes Modell
 
 acc: 0.8686 | Overfitting
 
+```
 Epoch 1/20
 165/165 ━━━━━━━━━━━━━━━━━━━━ 11s 59ms/step - accuracy: 0.8253 - loss: 0.4201 - val_accuracy: 0.5238 - val_loss: 1.2600
 Epoch 2/20
@@ -328,6 +343,7 @@ Epoch 14/20
 [INFO] Evaluating on test data...
 99/99 ━━━━━━━━━━━━━━━━━━━━ 1s 12ms/step - accuracy: 0.8686 - loss: 0.3313
 [INFO] Test Accuracy: 0.8686
+```
 
 # Transferlearning mit MobileNetV3Small
 
@@ -335,6 +351,7 @@ Epoch 14/20
 
 Final Test Accuracy: 95.44% | kein Overfitting -> gute Generalisierung
 
+```
 Epoch 1/20
 422/422 ━━━━━━━━━━━━━━━━━━━━ 61s 137ms/step - accuracy: 0.7211 - loss: 0.9418 - val_accuracy: 0.8859 - val_loss: 0.4024
 Epoch 2/20
@@ -376,11 +393,13 @@ Epoch 19/20
 Epoch 20/20
 422/422 ━━━━━━━━━━━━━━━━━━━━ 27s 64ms/step - accuracy: 0.9524 - loss: 0.1377 - val_accuracy: 0.9522 - val_loss: 0.1428
 254/254 ━━━━━━━━━━━━━━━━━━━━ 21s 79ms/step - accuracy: 0.9544 - loss: 0.1337
+```
 
 ## Binary classification
 
 Final Test Accuracy: 98.16% | kein Overfitting, gute Generalisierung
 
+```
 Epoch 1/20
 165/165 ━━━━━━━━━━━━━━━━━━━━ 13s 67ms/step - accuracy: 0.8657 - loss: 0.3077 - val_accuracy: 0.9386 - val_loss: 0.1654
 Epoch 2/20
@@ -422,3 +441,4 @@ Epoch 19/20
 Epoch 20/20
 165/165 ━━━━━━━━━━━━━━━━━━━━ 20s 121ms/step - accuracy: 0.9781 - loss: 0.0561 - val_accuracy: 0.9795 - val_loss: 0.0544
 99/99 ━━━━━━━━━━━━━━━━━━━━ 12s 80ms/step - accuracy: 0.9816 - loss: 0.0588
+```
