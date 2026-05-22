@@ -1,4 +1,5 @@
 import tensorflow as tf
+from tensorflow.keras import regularizers
 from tensorflow.keras import layers, models
 from tensorflow.keras.callbacks import ModelCheckpoint, EarlyStopping
 from pathlib import Path
@@ -8,9 +9,11 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from src.helpers.project_constants import (
     TRAIN_DIR, VAL_DIR, TEST_DIR,
-    IMG_HEIGHT, IMG_WIDTH, BATCH_SIZE, EPOCHS,
-    BEST_MULTICLASS_SCRATCH_MODEL, FINAL_MULTICLASS_SCRATCH_MODEL
+    IMG_HEIGHT, IMG_WIDTH, BATCH_SIZE, EPOCHS, MODEL_DIR
 )
+
+BEST_MULTICLASS_SCRATCH_MODEL = MODEL_DIR / "best_multiclass_cnn_v4.keras"
+FINAL_MULTICLASS_SCRATCH_MODEL = MODEL_DIR / "final_multiclass_cnn_v4.keras"
 
 print("[INFO] Loading training data...")
 train_dataset = tf.keras.utils.image_dataset_from_directory(
@@ -41,27 +44,36 @@ test_dataset = test_dataset.cache().prefetch(buffer_size=AUTOTUNE)
 
 
 def create_model():
+    weight_decay = 1e-4
+
     model = models.Sequential([
-        # Rescaling: Pixelwerte von [0, 255] auf [0, 1] normalisieren
-        layers.Rescaling(1. / 255, input_shape=(IMG_HEIGHT, IMG_WIDTH, 3)),
+        layers.Input(shape=(IMG_HEIGHT, IMG_WIDTH, 3)),
+        layers.Rescaling(1.0/255),
 
-        # Block 1
-        layers.Conv2D(32, (3, 3), activation='relu'),
-        layers.MaxPooling2D((2, 2)),
+        # Block 1: 32 filters
+        layers.Conv2D(32, 3, padding='same', kernel_regularizer=regularizers.l2(weight_decay)),
+        layers.BatchNormalization(),
+        layers.Activation('relu'),
+        layers.Conv2D(32, 3, padding='same', kernel_regularizer=regularizers.l2(weight_decay)),
+        layers.BatchNormalization(),
+        layers.Activation('relu'),
+        layers.MaxPooling2D(2),
 
-        # Block 2
-        layers.Conv2D(64, (3, 3), activation='relu'),
-        layers.MaxPooling2D((2, 2)),
+        # Block 2: 64 filters
+        layers.Conv2D(64, 3, padding='same', kernel_regularizer=regularizers.l2(weight_decay)),
+        layers.BatchNormalization(),
+        layers.Activation('relu'),
+        layers.Conv2D(64, 3, padding='same', kernel_regularizer=regularizers.l2(weight_decay)),
+        layers.BatchNormalization(),
+        layers.Activation('relu'),
+        layers.MaxPooling2D(2),
 
-        # Block 3
-        layers.Conv2D(64, (3, 3), activation='relu'),
-        layers.MaxPooling2D((2, 2)),
-
-        # Flatten und Klassifikator
-        layers.Flatten(),
-        layers.Dense(64, activation='relu'),
+        # Classifier
+        layers.GlobalAveragePooling2D(),
         layers.Dropout(0.5),
-        layers.Dense(10, activation='softmax')  # 10 Klassen für EuroSAT
+        layers.Dense(64, activation='relu', kernel_regularizer=regularizers.l2(weight_decay)),
+        layers.Dropout(0.5),
+        layers.Dense(10, activation='softmax')
     ])
     return model
 

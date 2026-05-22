@@ -34,11 +34,4 @@ def get_class_names() -> list:
     class_names = sorted([d.name for d in TEST_DIR.iterdir() if d.is_dir()])
     return class_names
 
-# Paths to save models after training
-BEST_MULTICLASS_SCRATCH_MODEL = MODEL_DIR / "best_eurosat_cnn.keras"
-FINAL_MULTICLASS_SCRATCH_MODEL = MODEL_DIR / "final_eurosat_cnn.keras"
-
-BEST_BINARY_SCRATCH_MODEL = MODEL_DIR / "best_binary_cnn.keras"
-FINAL_BINARY_SCRATCH_MODEL = MODEL_DIR / "final_binary_cnn.keras"
-
 
