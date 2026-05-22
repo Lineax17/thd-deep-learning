@@ -9,15 +9,14 @@ from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.models import load_model
 from tensorflow.keras.applications.mobilenet_v3 import preprocess_input
 
+from helpers.project_constants import TRAIN_DIR, VAL_DIR, TEST_DIR
+
 # === Configuration ===
-REPO_ROOT = Path(__file__).resolve().parents[3]
+REPO_ROOT = Path(__file__).resolve().parents[2]
 MODEL_OUTPUT_DIR = Path(os.environ.get("MODEL_OUTPUT_DIR", REPO_ROOT / "models"))
 MODEL_OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
-TRAIN_DIR = REPO_ROOT / "data" / "train_data"
-VAL_DIR = REPO_ROOT / "data" / "val_data"
-TEST_DIR = REPO_ROOT / "data" / "test_data"
-SAVE_MODEL_PATH = MODEL_OUTPUT_DIR / "eurosat_multilabel_mobilenetv3_freezed.keras"
+SAVE_MODEL_PATH = MODEL_OUTPUT_DIR / "transferlearning_eurosat_multilabel.keras"
 
 IMG_SIZE = (224, 224)
 BATCH_SIZE = 32
