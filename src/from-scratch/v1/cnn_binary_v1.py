@@ -7,28 +7,30 @@ import sys
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from src.helpers.project_constants import (
-    TRAIN_DIR, VAL_DIR, TEST_DIR,
-    IMG_HEIGHT, IMG_WIDTH, BATCH_SIZE, EPOCHS,
-    BEST_MULTICLASS_SCRATCH_MODEL, FINAL_MULTICLASS_SCRATCH_MODEL
+    BINARY_TRAIN_DIR, BINARY_VAL_DIR, BINARY_TEST_DIR,
+    IMG_HEIGHT, IMG_WIDTH, BATCH_SIZE, EPOCHS, MODEL_DIR
 )
+
+BEST_BINARY_SCRATCH_MODEL = MODEL_DIR / "best_binary_cnn_v1.keras"
+FINAL_BINARY_SCRATCH_MODEL = MODEL_DIR / "final_binary_cnn_v1.keras"
 
 print("[INFO] Loading training data...")
 train_dataset = tf.keras.utils.image_dataset_from_directory(
-    str(TRAIN_DIR),
+    str(BINARY_TRAIN_DIR),
     image_size=(IMG_HEIGHT, IMG_WIDTH),
     batch_size=BATCH_SIZE
 )
 
 print("[INFO] Loading validation data...")
 val_dataset = tf.keras.utils.image_dataset_from_directory(
-    str(VAL_DIR),
+    str(BINARY_VAL_DIR),
     image_size=(IMG_HEIGHT, IMG_WIDTH),
     batch_size=BATCH_SIZE
 )
 
 print("[INFO] Loading test data...")
 test_dataset = tf.keras.utils.image_dataset_from_directory(
-    str(TEST_DIR),
+    str(BINARY_TEST_DIR),
     image_size=(IMG_HEIGHT, IMG_WIDTH),
     batch_size=BATCH_SIZE
 )
@@ -61,7 +63,7 @@ def create_model():
         layers.Flatten(),
         layers.Dense(64, activation='relu'),
         layers.Dropout(0.5),
-        layers.Dense(10, activation='softmax')  # 10 Klassen für EuroSAT
+        layers.Dense(2, activation='softmax')  # 2 Klassen für binäre Klassifikation (Land vs Water)
     ])
     return model
 
@@ -76,7 +78,7 @@ model.compile(
 )
 
 checkpoint_cb = ModelCheckpoint(
-    filepath=str(BEST_MULTICLASS_SCRATCH_MODEL),
+    filepath=str(BEST_BINARY_SCRATCH_MODEL),
     save_best_only=True,
     monitor='val_accuracy'
 )
@@ -99,5 +101,6 @@ print("[INFO] Evaluating on test data...")
 test_loss, test_acc = model.evaluate(test_dataset)
 print(f"[INFO] Test Accuracy: {test_acc:.4f}")
 
-model.save(str(FINAL_MULTICLASS_SCRATCH_MODEL))
-print(f"[INFO] Model saved to: {FINAL_MULTICLASS_SCRATCH_MODEL}")
+model.save(str(FINAL_BINARY_SCRATCH_MODEL))
+print(f"[INFO] Model saved to: {FINAL_BINARY_SCRATCH_MODEL}")
+
