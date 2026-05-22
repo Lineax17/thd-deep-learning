@@ -12,7 +12,7 @@ from src.helpers.project_constants import (
     IMG_HEIGHT, IMG_WIDTH, BATCH_SIZE, EPOCHS, MODEL_DIR
 )
 
-BEST_MULTICLASS_SCRATCH_MODEL = MODEL_DIR / "best_multiclass_cnn_v4.keras"
+BEST_MULTICLASS_SCRATCH_MODEL = MODEL_DIR / "best_multiclass_cnn_v3.keras"
 FINAL_MULTICLASS_SCRATCH_MODEL = MODEL_DIR / "final_multiclass_cnn_v4.keras"
 
 print("[INFO] Loading training data...")
@@ -54,15 +54,9 @@ def create_model():
         layers.Conv2D(32, 3, padding='same', kernel_regularizer=regularizers.l2(weight_decay)),
         layers.BatchNormalization(),
         layers.Activation('relu'),
-        layers.Conv2D(32, 3, padding='same', kernel_regularizer=regularizers.l2(weight_decay)),
-        layers.BatchNormalization(),
-        layers.Activation('relu'),
         layers.MaxPooling2D(2),
 
         # Block 2: 64 filters
-        layers.Conv2D(64, 3, padding='same', kernel_regularizer=regularizers.l2(weight_decay)),
-        layers.BatchNormalization(),
-        layers.Activation('relu'),
         layers.Conv2D(64, 3, padding='same', kernel_regularizer=regularizers.l2(weight_decay)),
         layers.BatchNormalization(),
         layers.Activation('relu'),
@@ -70,15 +64,6 @@ def create_model():
 
         # Block 3: 128 filters
         layers.Conv2D(128, 3, padding='same', kernel_regularizer=regularizers.l2(weight_decay)),
-        layers.BatchNormalization(),
-        layers.Activation('relu'),
-        layers.Conv2D(128, 3, padding='same', kernel_regularizer=regularizers.l2(weight_decay)),
-        layers.BatchNormalization(),
-        layers.Activation('relu'),
-        layers.MaxPooling2D(2),
-
-        # Block 4: 256 filters
-        layers.Conv2D(256, 3, padding='same', kernel_regularizer=regularizers.l2(weight_decay)),
         layers.BatchNormalization(),
         layers.Activation('relu'),
         layers.MaxPooling2D(2),

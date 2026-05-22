@@ -68,25 +68,10 @@ def create_model():
         layers.Activation('relu'),
         layers.MaxPooling2D(2),
 
-        # Block 3: 128 filters
-        layers.Conv2D(128, 3, padding='same', kernel_regularizer=regularizers.l2(weight_decay)),
-        layers.BatchNormalization(),
-        layers.Activation('relu'),
-        layers.Conv2D(128, 3, padding='same', kernel_regularizer=regularizers.l2(weight_decay)),
-        layers.BatchNormalization(),
-        layers.Activation('relu'),
-        layers.MaxPooling2D(2),
-
-        # Block 4: 256 filters
-        layers.Conv2D(256, 3, padding='same', kernel_regularizer=regularizers.l2(weight_decay)),
-        layers.BatchNormalization(),
-        layers.Activation('relu'),
-        layers.MaxPooling2D(2),
-
         # Classifier
         layers.GlobalAveragePooling2D(),
         layers.Dropout(0.5),
-        layers.Dense(128, activation='relu', kernel_regularizer=regularizers.l2(weight_decay)),
+        layers.Dense(64, activation='relu', kernel_regularizer=regularizers.l2(weight_decay)),
         layers.Dropout(0.5),
         layers.Dense(10, activation='softmax')
     ])
