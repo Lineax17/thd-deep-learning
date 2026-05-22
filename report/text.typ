@@ -4,10 +4,10 @@
 = Datensatzbeschreibung
 #lorem(39)
 
-= Modell 1: von Grund auf trainiert
+= Convolutional Neural Network von Scratch
 #lorem(45)
 
-= Modell 2: vortrainiertes Modell mit Feinabstimmung
+= Convolutional Neural Network mit Transfer Learning
 #lorem(45)
 
 = Ergebnisse

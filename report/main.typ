@@ -8,7 +8,7 @@
 #let student = "Nico Dilger"
 #let matrnr = "22302719"
 #let student2 = "Peter Okruhlica"
-#let matrnr2 = "00000000"
+#let matrnr2 = "22300246"
 #let student3 = "Philipp Hartmann"
 #let matrnr3 = "00000000"
 #let student4 = "Bojidar Ivanov"
