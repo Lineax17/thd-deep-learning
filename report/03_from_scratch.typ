@@ -1,6 +1,6 @@
 = Convolutional Neural Network von Scratch
 
-Die Findung einer guten Architektur für unser CNN von Scratch involvierte diverse Versuche. Zuerst sahen wir uns den Datensatz an und analysierten seine Gegebenheiten. Wie schon in der Beschreibung erwähnt ist der EuroSAT Datensatz ein verhältnismäßig kleiner Datensatz mit verhältnismäßig kleinen Bildern. Dadurch war klar wie wir mit der Architektur-Findung anfangen. Wir würden ein kleines Netz nehmen und dieses dann bis zum Punkt des Overfittings vergrößern. Danach verkleinern wir es bis wir einen Punkt des optimalen Fits finden. Dadurch kam unser erster Versuch zu Stande.
+Die Suche nach einer geeigneten Architektur für unser CNN von Scratch umfasste mehrere Versuche. Zunächst analysierten wir den Datensatz und seine Eigenschaften. Wie bereits in der Beschreibung erwähnt, ist der EuroSAT-Datensatz vergleichsweise klein und enthält entsprechend kleine Bilder. Daher war schnell klar, wie wir bei der Architektursuche vorgehen würden: Wir begannen mit einem kleinen Netz, vergrößerten es gezielt bis zum Overfitting und verkleinerten es anschließend wieder, bis wir einen möglichst guten Kompromiss gefunden hatten. Daraus entstand unser erster Versuch.
 
 == Versuch 1 - Ein kleines Netz
 
@@ -33,19 +33,19 @@ def create_model():
     return model
 ```
 
-Die Architektur besteht aus drei aufeinanderfolgenden Convolutional-Blöcken sowie einem anschließenden voll verbundenen Klassifikator.
+Die Architektur besteht aus drei aufeinanderfolgenden Convolutional-Blöcken sowie einem anschließenden vollständig verbundenen Klassifikator.
 
-Jeder Convolutional-Block setzt sich aus einer Faltungsschicht (Conv2D) mit ReLU-Aktivierung und einer anschließenden Max-Pooling-Schicht zusammen. Die Faltungsschichten dienen der Extraktion lokaler Bildmerkmale, während das Max-Pooling eine Reduktion der räumlichen Auflösung bewirkt und somit die Rechenkomplexität verringert.
+Jeder Convolutional-Block setzt sich aus einer Faltungsschicht (Conv2D) mit ReLU-Aktivierung und einer anschließenden Max-Pooling-Schicht zusammen. Die Faltungsschichten dienen der Extraktion lokaler Bildmerkmale, während das Max-Pooling die räumliche Auflösung reduziert und damit die Rechenkomplexität verringert.
 
 Die Anzahl der Filter steigt im Verlauf des Netzwerks von 32 auf 64, wodurch zunehmend komplexere Merkmale gelernt werden können.
 
 Nach der Feature-Extraktion werden die Feature Maps mittels Flatten in einen Vektor überführt und durch zwei Dense-Schichten klassifiziert. Zur Regularisierung wird eine Dropout-Schicht eingesetzt, um Overfitting zu reduzieren.
 
-Dieses Modell konnte in der Multilabelclassification schon über 80% Accuracy erzielen ohne zu Overfitten. Der nächste Schritt war nun dieses Modell zu vergrößern und damit bewusst Overfitting zu erreichen. Was wir später herausfinden sollten war, dass für das binäre Klassifikationsproblem dieses Netz sogar schon ausreichend war. 
+Dieses Modell konnte in der Multiclass-Klassifikation bereits eine Accuracy von über 80 % erzielen, ohne zu overfitten. Der nächste Schritt bestand daher darin, das Modell zu vergrößern und bewusst Overfitting zu erzeugen. Später stellte sich jedoch heraus, dass dieses Netz für das binäre Klassifikationsproblem bereits ausreichte.
 
 == Versuch 2 - Gezieltes Overfitting
 
-Deshalb haben wir das Modell deutlich verringert und zusätzlich architektonisch an modernere Conv-Nets angepasst. 
+Deshalb haben wir das Modell deutlich vergrößert und zusätzlich architektonisch an modernere Conv-Nets angepasst.
 
 ```python
 def create_model():
@@ -100,19 +100,21 @@ def create_model():
 
 Damit besteht jeder Block aus zwei aufeinanderfolgenden Faltungsschichten mit „same“-Padding, gefolgt von Batch-Normalisierung und ReLU-Aktivierung. Diese Kombination ermöglicht eine stabilere und effizientere Trainingsdynamik, da interne Kovariatenverschiebungen reduziert werden.
 
-Nach jeweils zwei Faltungsschichten erfolgt ein Max-Pooling zur Reduktion der räumlichen Dimensionen. Die Anzahl der Filter wird blockweise von 32 über 64 und 128 bis auf 256 erhöht, wodurch eine hierarchischere Merkmalsextraktion in Gegensatz zum ersten Netz ermöglicht wird.
+Nach jeweils zwei Faltungsschichten erfolgt ein Max-Pooling zur Reduktion der räumlichen Dimensionen. Die Anzahl der Filter wird blockweise von 32 über 64 und 128 bis auf 256 erhöht, wodurch im Gegensatz zum ersten Netz eine hierarchischere Merkmalsextraktion ermöglicht wird.
 
 Zusätzlich wird L2-Regularisierung (Weight Decay) in den Faltungsschichten eingesetzt, um Overfitting entgegenzuwirken.
 
 Im Klassifikationskopf wird anstelle eines Flatten-Layers ein Global Average Pooling verwendet. Dies reduziert die Anzahl der Parameter signifikant und verbessert die Generalisierungsfähigkeit. Abschließend erfolgt die Klassifikation über zwei Dense-Schichten mit Dropout-Regularisierung.
 
-Im Vergleich zum ersten Modell weist das zweite Modell eine deutlich tiefere und stärker regulärisierte Architektur auf. Durch den Einsatz mehrerer Faltungsschichten pro Block sowie Batch-Normalisierung kann eine robustere Feature-Repräsentation gelernt werden. Zudem reduziert Global Average Pooling die Modellkomplexität im Klassifikationskopf, was insbesondere bei begrenzten Trainingsdaten von Vorteil ist.
+Im Vergleich zum ersten Modell weist das zweite Modell eine deutlich tiefere und stärker regularisierte Architektur auf. Durch den Einsatz mehrerer Faltungsschichten pro Block sowie Batch-Normalisierung kann eine robustere Feature-Repräsentation gelernt werden. Zudem reduziert Global Average Pooling die Modellkomplexität im Klassifikationskopf, was insbesondere bei begrenzten Trainingsdaten von Vorteil ist.
 
-Aufgrund der Natur des Datensatzes führte dieses Modell wie erwartet zu großem Overfitting. Damit war das Ziel dieses Versuchs erreicht und wir konnten uns ab hier zurück arbeiten. 
+Die Architektur orientiert sich an Designprinzipien moderner CNNs wie VGGNet, reduziert jedoch gezielt die Tiefe, um sich besser an die begrenzte Datensatzgröße anzupassen. @simonyan2014vgg @he2015resnet
 
-== Versuch 3 - Die Suche nach der goldenen Mitte 
+Aufgrund der Natur des Datensatzes führte dieses Modell wie erwartet zu starkem Overfitting. Damit war das Ziel dieses Versuchs erreicht, und wir konnten uns von dort aus wieder zurückarbeiten.
 
-Im dritten Versuch haben wir das Netz aus dem zweiten Versuch genommen und die Anzahl der Layer ein wenig reduziert.
+== Versuch 3 - Die Suche nach der goldenen Mitte
+
+Im dritten Versuch haben wir das Netz aus dem zweiten Versuch übernommen und die Anzahl der Layer etwas reduziert.
 
 ```python
 def create_model():
@@ -152,18 +154,18 @@ def create_model():
 
 Im Gegensatz zum zweiten Modell besteht jeder Convolutional-Block nur noch aus einer einzelnen Faltungsschicht, gefolgt von Batch-Normalisierung, ReLU-Aktivierung und Max-Pooling. Dadurch wird die Tiefe des Netzwerks deutlich reduziert, was zu einer geringeren Anzahl trainierbarer Parameter führt.
 
-Die Anzahl der Filter steigt weiterhin blockweise von 32 über 64 auf 128 an, sodass grundlegende hierarchische Feature-Extraktion erhalten bleibt. Allerdings entfällt die zweite Faltungsschicht pro Block, wodurch die Fähigkeit zur Modellierung komplexer Merkmale eingeschränkt ist.
+Die Anzahl der Filter steigt weiterhin blockweise von 32 über 64 auf 128 an, sodass die grundlegende hierarchische Feature-Extraktion erhalten bleibt. Allerdings entfällt die zweite Faltungsschicht pro Block, wodurch die Fähigkeit zur Modellierung komplexer Merkmale eingeschränkt ist.
 
 Wie im zweiten Modell werden Batch-Normalisierung sowie L2-Regularisierung eingesetzt, um das Training zu stabilisieren und Overfitting zu reduzieren.
 
-Der Klassifikationskopf bleibt weitgehend unverändert und verwendet Global Average Pooling sowie Dropout-Regularisierung. Im Unterschied zu den vorherigen Modellen wird die finale Dense-Schicht jedoch auf zwei Ausgabeneuronen angepasst, um ein binäres Klassifikationsproblem zu lösen.
+Der Klassifikationskopf bleibt weitgehend unverändert und verwendet Global Average Pooling sowie Dropout-Regularisierung. Im Unterschied zu den vorherigen Modellen wird die finale Dense-Schicht jedoch auf zwei Ausgabeneuronen angepasst, um das binäre Klassifikationsproblem zu lösen.
 
-Damit konnten wir das Overfitting reduzieren aber noch nicht ganz beheben. Daraufhin war die nächste Idee die Breite des Modells zu verringern (max 64 Neuronen), aber dafür die Tiefe ein wenig zu vergrößern.
+Damit konnten wir das Overfitting reduzieren, aber noch nicht vollständig beheben. Daraufhin war die nächste Idee, die Breite des Modells zu verringern (maximal 64 Neuronen), dafür aber die Tiefe leicht zu vergrößern.
 
 
-== Versuch 4 - Auf dem Weg zu einem guten Modell 
+== Versuch 4 - Auf dem Weg zu einem guten Modell
 
-Hierauf führten wir unseren letzten und erfolgreichsten Versuch durch.
+Anschließend führten wir unseren letzten und erfolgreichsten Versuch durch.
 
 ```python
 def create_model():
@@ -211,4 +213,4 @@ Die Anzahl der Filter steigt von 32 auf 64 an, wodurch eine schrittweise Erweite
 
 Der Klassifikationskopf verwendet Global Average Pooling zur Reduktion der Parameteranzahl, gefolgt von Dense-Schichten mit Dropout-Regularisierung. Die finale Softmax-Schicht ermöglicht die Klassifikation in zehn Klassen.
 
-Mit diesem Modell konnten wir keinerlei Overfitting bei der Multilabelclassification mehr feststellen. Die Accuracy stieg damit von ca 80% auf 88% an, was uns zu dem Schluss führt dass wir hiermit auf dem Weg zu einem guten Modell sind, das eine gute Generalisierungsfähigkeit und eine für das Vorliegende Problem geeignete Komplexität bietet.
+Mit diesem Modell konnten wir kein Overfitting mehr feststellen. Die Accuracy stieg damit von etwa 80 % auf 88 % an, was uns zu dem Schluss führte, dass wir damit auf dem Weg zu einem guten Modell sind, das eine gute Generalisierungsfähigkeit und eine für das vorliegende Problem geeignete Komplexität bietet.
