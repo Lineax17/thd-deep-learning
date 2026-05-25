@@ -41,7 +41,7 @@ Die Anzahl der Filter steigt im Verlauf des Netzwerks von 32 auf 64, wodurch zun
 
 Nach der Feature-Extraktion werden die Feature Maps mittels Flatten in einen Vektor überführt und durch zwei Dense-Schichten klassifiziert. Zur Regularisierung wird eine Dropout-Schicht eingesetzt, um Overfitting zu reduzieren.
 
-Dieses Modell konnte in der Multiclass-Klassifikation bereits eine Accuracy von über 80 % erzielen, ohne zu overfitten. Der nächste Schritt bestand daher darin, das Modell zu vergrößern und bewusst Overfitting zu erzeugen. Später stellte sich jedoch heraus, dass dieses Netz für das binäre Klassifikationsproblem bereits ausreichte.
+Dieses Modell konnte in der Multiclass-Klassifikation bereits eine Accuracy von über 80% erzielen, ohne zu overfitten. Der nächste Schritt bestand daher darin, das Modell zu vergrößern und bewusst Overfitting zu erzeugen. Später stellte sich jedoch heraus, dass dieses Netz für das binäre Klassifikationsproblem bereits ausreichte.
 
 == Versuch 2 - Gezieltes Overfitting
 
@@ -203,9 +203,7 @@ def create_model():
     return model
 ```
 
-Das vierte Modell stellt damit eine ausgewogene Weiterentwicklung der vorherigen Ansätze dar, bei der eine moderate Netzwerktiefe mit effektiver Regularisierung kombiniert wird.
-
-Die Architektur besteht aus zwei Convolutional-Blöcken, die jeweils zwei aufeinanderfolgende Faltungsschichten mit Batch-Normalisierung und ReLU-Aktivierung enthalten. Durch die Verwendung mehrerer Faltungsschichten pro Block wird eine hierarchische Merkmalsextraktion innerhalb eines Blocks ermöglicht, wodurch komplexere Feature-Repräsentationen gelernt werden können.
+Das vierte Modell stellt damit eine ausgewogene Weiterentwicklung der vorherigen Ansätze dar. Die Architektur besteht aus zwei Convolutional-Blöcken, die jeweils zwei aufeinanderfolgende Faltungsschichten mit Batch-Normalisierung und ReLU-Aktivierung enthalten. Durch die Verwendung mehrerer Faltungsschichten pro Block wird eine hierarchische Merkmalsextraktion innerhalb eines Blocks ermöglicht, wodurch komplexere Feature-Repräsentationen gelernt werden können.
 
 Im Vergleich zu tieferen Architekturen wird die Anzahl der Blöcke jedoch bewusst auf zwei beschränkt. Dies reduziert die Modellkomplexität und verhindert eine zu starke räumliche Reduktion der Feature Maps durch wiederholtes Pooling.
 
@@ -213,4 +211,6 @@ Die Anzahl der Filter steigt von 32 auf 64 an, wodurch eine schrittweise Erweite
 
 Der Klassifikationskopf verwendet Global Average Pooling zur Reduktion der Parameteranzahl, gefolgt von Dense-Schichten mit Dropout-Regularisierung. Die finale Softmax-Schicht ermöglicht die Klassifikation in zehn Klassen.
 
-Mit diesem Modell konnten wir kein Overfitting mehr feststellen. Die Accuracy stieg damit von etwa 80 % auf 88 % an, was uns zu dem Schluss führte, dass wir damit auf dem Weg zu einem guten Modell sind, das eine gute Generalisierungsfähigkeit und eine für das vorliegende Problem geeignete Komplexität bietet.
+Mit diesem Modell konnten wir kein Overfitting mehr feststellen. Die Accuracy stieg damit von etwa 80% auf 88% an, was uns zu dem Schluss führte, dass wir damit auf dem Weg zu einem guten Modell sind, das eine gute Generalisierungsfähigkeit und eine für das vorliegende multilabel Klassifikations-Problem geeignete Komplexität bietet.
+
+Wie schon bei Versuch 1 erwähnt, war dieser erste Versuch für das binäre Klassifikationsproblem am erfolgreichsten. Dazu jedoch noch mehr bei der Auswertung der Ergebnisse.
