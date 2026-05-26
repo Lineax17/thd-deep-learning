@@ -16,14 +16,21 @@ def parse_results(file_path):
             data[current_exp] = {}
         elif line.startswith('## '):
             current_task = line[3:].strip()
-            data[current_exp][current_task] = {'accuracy': [], 'loss': [], 'val_accuracy': [], 'val_loss': []}
+            data[current_exp][current_task] = {'accuracy': [], 'loss': [], 'val_accuracy': [], 'val_loss': [], 'test_accuracy': None}
         else:
             match = re.search(r'accuracy:\s+([\d.]+)\s+-\s+loss:\s+([\d.]+)\s+-\s+val_accuracy:\s+([\d.]+)\s+-\s+val_loss:\s+([\d.]+)', line)
+            match_test1 = re.search(r'\[INFO\] Test Accuracy: ([\d.]+)', line)
+            match_test2 = re.search(r'Final Test Accuracy: ([\d.]+)%', line)
+            
             if match and current_exp and current_task:
                 data[current_exp][current_task]['accuracy'].append(float(match.group(1)))
                 data[current_exp][current_task]['loss'].append(float(match.group(2)))
                 data[current_exp][current_task]['val_accuracy'].append(float(match.group(3)))
                 data[current_exp][current_task]['val_loss'].append(float(match.group(4)))
+            elif match_test1 and current_exp and current_task:
+                data[current_exp][current_task]['test_accuracy'] = float(match_test1.group(1))
+            elif match_test2 and current_exp and current_task:
+                data[current_exp][current_task]['test_accuracy'] = float(match_test2.group(1)) / 100.0
                 
     return data
 
@@ -49,6 +56,10 @@ def plot_learning_curves(data, output_dir):
             # Accuracy plot
             ax1.plot(epochs, metrics['accuracy'], label='Training', color='blue', marker='o', markersize=4)
             ax1.plot(epochs, metrics['val_accuracy'], label='Validation', color='orange', marker='s', markersize=4)
+            
+            if metrics.get('test_accuracy') is not None:
+                ax1.axhline(y=metrics['test_accuracy'], color='green', linestyle='--', label=f'Test ({metrics["test_accuracy"]:.4f})')
+                
             ax1.set_title(f'Accuracy')
             ax1.set_xlabel('Epochen')
             ax1.set_ylabel('Accuracy')
