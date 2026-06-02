@@ -162,11 +162,12 @@ Ort, Datum #h(1fr) Unterschriften
 ]
 
 
-#include "01_problem&dataset.typ"
-#include "02_from_scratch.typ"
-#include "03_transferlearning.typ"
-#include "04_results.typ"
-#include "05_comparision.typ"
-#include "06_discussion.typ"
+#include "01_problem.typ"
+#include "02_dataset.typ"
+#include "03_from_scratch.typ"
+#include "04_transferlearning.typ"
+#include "05_results.typ"
+#include "06_comparision.typ"
+#include "07_discussion.typ"
 
 //#include "text.typ"
