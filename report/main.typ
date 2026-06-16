@@ -8,9 +8,9 @@
 #let student = "Nico Dilger"
 #let matrnr = "22302719"
 #let student2 = "Peter Okruhlica"
-#let matrnr2 = "00000000"
+#let matrnr2 = "22300246"
 #let student3 = "Philipp Hartmann"
-#let matrnr3 = "00000000"
+#let matrnr3 = "22209467"
 #let student4 = "Bojidar Ivanov"
 #let matrnr4 = "00000000"
 #let submissiondate = "28. Juni 2026"
@@ -162,5 +162,12 @@ Ort, Datum #h(1fr) Unterschriften
 ]
 
 
+#include "01_problem.typ"
+#include "02_dataset.typ"
+#include "03_from_scratch.typ"
+#include "04_transferlearning.typ"
+#include "05_results.typ"
+#include "06_comparision.typ"
+#include "07_discussion.typ"
 
-#include "text.typ"
+//#include "text.typ"
