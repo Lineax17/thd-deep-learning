@@ -87,6 +87,7 @@
 // ===================================
 #show: ieee.with(
   title: titleDE,
+  paper-size: "a4",
   abstract: [
     The abstract goes here.
   ],
