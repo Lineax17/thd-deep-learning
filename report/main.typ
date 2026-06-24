@@ -12,7 +12,7 @@
 #let student3 = "Philipp Hartmann"
 #let matrnr3 = "22209467"
 #let student4 = "Bojidar Ivanov"
-#let matrnr4 = "00000000"
+#let matrnr4 = "22310450"
 #let submissiondate = "28. Juni 2026"
 #let supervisor = "Prof. Dr. Isabel Hübener"
 #let secsupervisor
@@ -64,15 +64,15 @@
 // ===================================
 // Declaration of originality
 // ===================================
-#heading(level: 1, outlined: false)[Eigenständigkeitserklärung]
+//#heading(level: 1, outlined: false)[Eigenständigkeitserklärung]
 
-Wir erklären hiermit, dass wir die vorliegende Arbeit selbstständig verfasst und keine anderen als die angegebenen Quellen und Hilfsmittel verwendet haben. \ \
+//Wir erklären hiermit, dass wir die vorliegende Arbeit selbstständig verfasst und keine anderen als die angegebenen Quellen und Hilfsmittel verwendet haben. \ \
 
-#v(2cm)
-#line(length: 100%, stroke: 0.5pt)
-Ort, Datum #h(1fr) Unterschriften
+//#v(2cm)
+//#line(length: 100%, stroke: 0.5pt)
+//Ort, Datum #h(1fr) Unterschriften
 
-#pagebreak()
+//#pagebreak()
 
 // ===================================
 // Table of Contents
