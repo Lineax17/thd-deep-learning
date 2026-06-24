@@ -6,10 +6,13 @@ Die Suche nach einer geeigneten Architektur für unser CNN von Scratch umfasste 
 
 Unser erstes kleines Netz sah wie folgt aus:
 
+#figure(
+  placement: top,
+  caption: [Model architecture used in experiment 1],
+)[
 ```python
 def create_model():
     model = models.Sequential([
-        # Rescaling: Pixelwerte von [0, 255] auf [0, 1] normalisieren
         layers.Rescaling(1. / 255, input_shape=(IMG_HEIGHT, IMG_WIDTH, 3)),
 
         # Block 1
@@ -32,6 +35,7 @@ def create_model():
     ])
     return model
 ```
+]
 
 Die Architektur besteht aus drei aufeinanderfolgenden Convolutional-Blöcken sowie einem anschließenden vollständig verbundenen Klassifikator.
 
@@ -47,6 +51,10 @@ Dieses Modell konnte in der Multiclass-Klassifikation bereits eine Accuracy von 
 
 Deshalb haben wir das Modell deutlich vergrößert und zusätzlich architektonisch an modernere Conv-Nets angepasst.
 
+#figure(
+  placement: top,
+  caption: [Model architecture used in experiment 2],
+)[
 ```python
 def create_model():
     weight_decay = 1e-4
@@ -97,6 +105,7 @@ def create_model():
     ])
     return model
 ```
+]
 
 Damit besteht jeder Block aus zwei aufeinanderfolgenden Faltungsschichten mit „same“-Padding, gefolgt von Batch-Normalisierung und ReLU-Aktivierung. Diese Kombination ermöglicht eine stabilere und effizientere Trainingsdynamik, da interne Kovariatenverschiebungen reduziert werden.
 
@@ -116,6 +125,10 @@ Aufgrund der Natur des Datensatzes führte dieses Modell wie erwartet zu starkem
 
 Im dritten Versuch haben wir das Netz aus dem zweiten Versuch übernommen und die Anzahl der Layer etwas reduziert.
 
+#figure(
+  placement: top,
+  caption: [Model architecture used in experiment 3],
+)[
 ```python
 def create_model():
     weight_decay = 1e-4
@@ -151,6 +164,7 @@ def create_model():
     ])
     return model
 ```
+]
 
 Im Gegensatz zum zweiten Modell besteht jeder Convolutional-Block nur noch aus einer einzelnen Faltungsschicht, gefolgt von Batch-Normalisierung, ReLU-Aktivierung und Max-Pooling. Dadurch wird die Tiefe des Netzwerks deutlich reduziert, was zu einer geringeren Anzahl trainierbarer Parameter führt.
 
@@ -167,6 +181,10 @@ Damit konnten wir das Overfitting reduzieren, aber noch nicht vollständig beheb
 
 Anschließend führten wir unseren letzten und erfolgreichsten Versuch durch.
 
+#figure(
+  placement: top,
+  caption: [Model architecture used in experiment 4],
+)[
 ```python
 def create_model():
     weight_decay = 1e-4
@@ -202,6 +220,7 @@ def create_model():
     ])
     return model
 ```
+]
 
 Das vierte Modell stellt damit eine ausgewogene Weiterentwicklung der vorherigen Ansätze dar. Die Architektur besteht aus zwei Convolutional-Blöcken, die jeweils zwei aufeinanderfolgende Faltungsschichten mit Batch-Normalisierung und ReLU-Aktivierung enthalten. Durch die Verwendung mehrerer Faltungsschichten pro Block wird eine hierarchische Merkmalsextraktion innerhalb eines Blocks ermöglicht, wodurch komplexere Feature-Repräsentationen gelernt werden können.
 
