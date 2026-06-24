@@ -11,10 +11,7 @@ Der Datensatz zeichnet sich durch folgende technische Spezifikationen aus:
 - *Klassenverteilung:* Eine explorative Datenanalyse zeigt, dass der Datensatz nicht vollständig balanciert ist. Die Anzahl der Bilder pro Klasse variiert zwischen 2.000 und 3.000, wobei die Klasse _Pasture_ mit 2.000 Bildern am schwächsten vertreten ist, während die Klassen _AnnualCrop_, _Forest_, _HerbaceousVegetation_, _Residential_ und _SeaLake_ jeweils 3.000 Bilder umfassen. Die übrigen Klassen (_Highway_, _Industrial_, _PermanentCrop_, _River_) liegen mit je 2.500 Bildern im mittleren Bereich. Die genaue Verteilung ist in @tab-klassen dargestellt.
 
 #figure(
-  // [Abbildung: Balkendiagramm der Klassenverteilung einfügen]
-  rect(width: 100%, height: 6cm, stroke: 0.5pt)[
-    #align(center + horizon)[_Abbildung: Klassenverteilung im EuroSAT-Datensatz_]
-  ],
+  image("figures/class_distribution.png", width: 100%),
   caption: [Klassenverteilung im EuroSAT-Datensatz (Balkendiagramm).],
 ) <fig-klassenverteilung>
 
