@@ -6,8 +6,15 @@ Die Suche nach einer geeigneten Architektur für unser CNN von Scratch umfasste 
 
 Unser erstes kleines Netz sah wie folgt aus:
 
+Die Architektur besteht aus drei aufeinanderfolgenden Convolutional-Blöcken sowie einem anschließenden vollständig verbundenen Klassifikator.
+
+Jeder Convolutional-Block setzt sich aus einer Faltungsschicht (Conv2D) mit ReLU-Aktivierung und einer anschließenden Max-Pooling-Schicht zusammen. Die Faltungsschichten dienen der Extraktion lokaler Bildmerkmale, während das Max-Pooling die räumliche Auflösung reduziert und damit die Rechenkomplexität verringert.
+
+Die Anzahl der Filter steigt im Verlauf des Netzwerks von 32 auf 64, wodurch zunehmend komplexere Merkmale gelernt werden können.
+
+Nach der Feature-Extraktion werden die Feature Maps mittels Flatten in einen Vektor überführt und durch zwei Dense-Schichten klassifiziert. Zur Regularisierung wird eine Dropout-Schicht eingesetzt, um Overfitting zu reduzieren.
+
 #figure(
-  placement: top,
   caption: [Model architecture used in experiment 1],
 )[
 ```python
@@ -36,14 +43,6 @@ def create_model():
     return model
 ```
 ]
-
-Die Architektur besteht aus drei aufeinanderfolgenden Convolutional-Blöcken sowie einem anschließenden vollständig verbundenen Klassifikator.
-
-Jeder Convolutional-Block setzt sich aus einer Faltungsschicht (Conv2D) mit ReLU-Aktivierung und einer anschließenden Max-Pooling-Schicht zusammen. Die Faltungsschichten dienen der Extraktion lokaler Bildmerkmale, während das Max-Pooling die räumliche Auflösung reduziert und damit die Rechenkomplexität verringert.
-
-Die Anzahl der Filter steigt im Verlauf des Netzwerks von 32 auf 64, wodurch zunehmend komplexere Merkmale gelernt werden können.
-
-Nach der Feature-Extraktion werden die Feature Maps mittels Flatten in einen Vektor überführt und durch zwei Dense-Schichten klassifiziert. Zur Regularisierung wird eine Dropout-Schicht eingesetzt, um Overfitting zu reduzieren.
 
 Dieses Modell konnte in der Multiclass-Klassifikation bereits eine Accuracy von über 80% erzielen, ohne zu overfitten. Der nächste Schritt bestand daher darin, das Modell zu vergrößern und bewusst Overfitting zu erzeugen. Später stellte sich jedoch heraus, dass dieses Netz für das binäre Klassifikationsproblem bereits ausreichte.
 
