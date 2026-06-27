@@ -114,7 +114,7 @@
       location: [Deggendorf, Germany]
     ),
   ),
-  bibliography: bibliography("refs.bib"),
+  bibliography: bibliography("refs.bib", title: "Literaturverzeichnis"),
   figure-supplement: [Fig.],
 )
 
