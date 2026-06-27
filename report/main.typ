@@ -88,16 +88,12 @@
 #show: ieee.with(
   title: titleDE,
   paper-size: "a4",
-  abstract: [
-    The abstract goes here.
-  ],
   authors: (
     (
       name: student,
       department: studies,
       organization: faculty,
-      location: [Deggendorf, Germany],
-      email: "nico.dilger@stud.th-deg.de"
+      location: [Deggendorf, Germany]
     ),
     (
       name: student2,
