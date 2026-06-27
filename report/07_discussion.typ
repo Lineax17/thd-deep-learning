@@ -1,1 +1,27 @@
 = Diskussion und Limitationen
+
+== Interpretation der Ergebnisse
+
+Die im Rahmen dieser Arbeit erzielten Resultate bestätigen weitgehend die in der Problemstellung formulierten Erwartungen, liefern jedoch auch einige aufschlussreiche Erkenntnisse. Es zeigt sich klar, dass Transfer Learning mit *MobileNetV3Small* dem eigenständig entwickelten CNN in beiden Klassifikationsszenarien klar überlegen ist – sowohl in der Multilabel-Klassifikation (95,44 % vs. 88,83 % Test-Accuracy) als auch in der binären Aufgabe (98,16 % vs. 94,35 %).
+
+Dieses Ergebnis ist nicht überraschend: Das vortrainierte Modell bringt Feature-Repräsentationen mit, die auf großen, vielfältigen Bilddatensätzen wie ImageNet erlernt wurden. Diese allgemeinen Merkmale – Kanten, Texturen, Formen – lassen sich direkt auf die Satellitendaten des EuroSAT-Datensatzes übertragen. Insbesondere die repetitiven Flächenmuster und feinen Texturunterschiede der Satellitenbilder, etwa zwischen landwirtschaftlichen Kulturen und Brachflächen, profitieren von der adaptiven Kanalgewichtung der Squeeze-and-Excitation-Module.
+
+Die Ergebnisse der Scratch-Modelle zeigen eine klare Lernkurve über die vier Versuche hinweg. Der iterative Prozess – vom unterfittenden flachen Netz (Versuch 1) über das absichtlich überfittende tiefe Netz (Versuch 2) bis hin zur gefundenen Balance in Versuch 4 – macht die fundamentale Herausforderung des Architekturdesigns für den EuroSAT-Datensatz deutlich: Die geringe Bildgröße von $64 times 64$ Pixeln lässt nur wenig Spielraum für tiefe Netzwerke. Das beste Scratch-Modell (Versuch 4) erzielte trotz dieses Aufwands eine solide Generalisierung, blieb jedoch im Validierungs-Loss instabiler als das Transfer-Learning-Modell.
+
+Bemerkenswert ist das paradoxe Verhalten bei der binären Klassifikation: Versuch 1, die einfachste Architektur mit der geringsten Kapazität, lieferte mit 94,35 % das stabilste Ergebnis, während Versuch 4 trotz besserer Multilabel-Performance mit 86,86 % hinter diesem Wert zurückblieb. Dies deutet darauf hin, dass eine vereinfachte Zweiklassenaufgabe (Wasser vs. Land) von einem kleinen Netzwerk effizienter gelöst werden kann, da das kleinere Modell weniger overfittet und dadurch besser generalisiert. Eine stärker auf Multilabel-Generalisierung ausgerichtete Architektur kann hierbei sogar kontraproduktiv sein.
+
+== Limitationen
+
+Trotz der positiven Ergebnisse unterliegt diese Arbeit einer Reihe von Einschränkungen, die bei der Interpretation der Resultate berücksichtigt werden sollten.
+
+*Datensatzspezifität:* Sämtliche Modelle wurden ausschließlich auf dem EuroSAT-Datensatz trainiert und evaluiert. Die Generalisierbarkeit auf andere Satellitenbilddatensätze, andere geografische Regionen oder andere Sensortypen wurde nicht untersucht. Insbesondere der Verzicht auf die multispektrale Variante des Datensatzes, zugunsten der RGB-Version für die Kompatibilität mit vortrainierten Modellen, bedeutet einen potenziellen Informationsverlust. Spektralbänder wie das Nahinfrarot (NIR) sind für die Landnutzungsklassifikation typischerweise besonders aussagekräftig.
+
+*Fehlende systematische Hyperparameter-Optimierung:* Die Architekturentscheidungen beim Scratch-Modell basierten auf iterativem Experimentieren und visueller Inspektion der Lernkurven, nicht auf einem systematischen Verfahren wie Grid Search oder Bayesianischer Optimierung. Es ist daher möglich, dass ein optimierteres Netz eine höhere Testgenauigkeit erreicht hätte. Ebenso wurde kein $k$-faches Kreuzvalidierungsverfahren eingesetzt, sodass die berichteten Genauigkeiten von der zufälligen Datenaufteilung abhängen und eine gewisse Varianz aufweisen können.
+
+*Upscaling als Verzerrungsquelle:* Für das Transfer-Learning-Modell mussten die originalen, $64 times 64$ Pixel großen Bilder auf $224 times 224$ Pixel hochskaliert werden, da MobileNetV3Small auf dieses Eingangsformat ausgelegt ist. Das Upscaling durch bilineare Interpolation erzeugt jedoch keine realen Bildinformationen und kann die Qualität der Feature-Extraktion beeinflussen, auch wenn der Effekt in den vorliegenden Ergebnissen keine sichtbare Beeinträchtigung verursacht hat.
+
+*Klassenungleichgewicht und binäre Aufteilung:* Der EuroSAT-Datensatz ist leicht ungleichmäßig verteilt (2.000 bis 3.000 Bilder pro Klasse). Obwohl stratifiziertes Sampling eingesetzt wurde, können seltenere Klassen bei der Mehrklassenklassifikation systematisch schlechter abschneiden. Für die binäre Klassifikation wurde eine pragmatische Aufteilung in Wasser- und Landklassen vorgenommen. Diese Gruppenbildung ist interpretierbar, aber nicht die einzig mögliche. Andere Aufteilungen könnten zu abweichenden Schlussfolgerungen führen.
+
+== Ausblick
+
+Die vorliegende Arbeit bietet mehrere Anknüpfungspunkte für weiterführende Untersuchungen. Aus Sicht der Modellentwicklung wäre eine systematische Architektursuche für das Scratch-Modell, beispielsweise mittels Neural Architecture Search, ein naheliegender nächster Schritt. Die Verwendung der multispektralen Variante des EuroSAT-Datensatzes in Kombination mit angepassten Eingangsschichten könnte zudem zeigen, ob die zusätzlichen Spektralinformationen einen signifikanten Vorteil gegenüber der RGB-basierten Klassifikation bieten. Schließlich wäre eine Evaluation der Modelle auf einem externen Datensatz ein wichtiger Test für die tatsächliche Generalisierungsfähigkeit der erlernten Repräsentationen über die spezifische Benchmarkumgebung hinaus.

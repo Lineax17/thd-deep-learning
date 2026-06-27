@@ -1,8 +1,8 @@
 = Vergleich
 
-Nachdem wir die Ergebnisse der individuell erstellten CNN-Architekturen (Versuch 1 bis 4) sowie des Transfer Learnings mittels *MobileNetV3Small* detailliert analysiert haben, wollen wir nachfolgend die jeweils am besten performenden Ansätze gegenüberstellen.
+Nachdem wir die Ergebnisse der Scratch-Modelle (Versuch 1 bis 4) und des Transfer-Learnings ausgewertet haben, vergleichen wir nun die besten Ansätze miteinander.
 
-Als stärkster Vertreter unserer Modelle "von Scratch" hat sich *Versuch 4* durchgesetzt. Durch eine limitierte Tiefe und moderate Kapazität konnte das Modell das gravierende Overfitting seiner Vorgänger stark einschränken und eine gute Balance zwischen Lernen und Generalisieren erreichen. Ihm gegenüber steht das vortrainierte *MobileNetV3Small*, das durch seine bereits extrahierten Feature-Karten und effiziente Architektur auszeichnet ist.
+Als stärkster Vertreter unserer Modelle "von Scratch" hat sich *Versuch 4* durchgesetzt. Durch eine limitierte Tiefe und moderate Kapazität konnte das Modell das gravierende Overfitting seiner Vorgänger stark einschränken und eine gute Balance zwischen Lernen und Generalisieren erreichen. Ihm gegenüber steht das vortrainierte *MobileNetV3Small*, das sich durch seine vortrainierten Feature-Maps und die effiziente Architektur auszeichnet.
 
 == Multilabel Klassifikation
 
@@ -21,6 +21,6 @@ Das *MobileNetV3Small* schlug aber auch hier alle eigens erstellten Modelle und 
 
 == Fazit des Vergleichs
 
-Das Transfer Learning mit *MobileNetV3Small* benötigte dank vortrainierter Gewichte weitaus weniger epochen (oftmals stabil bei $<5$ Epochen), um sehr hohe Genauigkeiten zu erzielen, wodurch die Ressourceneffizienz und Trainingsdauer deutlich besser ausfallen als bei den eigens erstellten Modellen.
-Die Herausforderung beim Aufbau eines Netzes "von Scratch" lag eindeutig im Overfitting. Die kleinen Bilder (64x64) des EuroSAT-Datensatzes erfordern zwingend kleine Netzwerke. Das MobileNet umgeht dieses Problem elegant durch seine *Depthwise Separable Convolutions*.
+Das Transfer Learning mit *MobileNetV3Small* benötigte dank vortrainierter Gewichte weitaus weniger Epochen (oftmals stabil bei $<5$ Epochen), um sehr hohe Genauigkeiten zu erzielen, wodurch die Ressourceneffizienz und Trainingsdauer deutlich besser ausfallen als bei den eigens erstellten Modellen.
+Die Herausforderung beim Aufbau eines Netzes "von Scratch" lag eindeutig im Overfitting. Die kleinen Bilder ($64 times 64$ Pixel) des EuroSAT-Datensatzes erfordern zwingend kleine Netzwerke. Das MobileNet umgeht dieses Problem elegant durch seine *Depthwise Separable Convolutions*.
 Wenn hohe Genauigkeit bei geringen Rechenkosten wichtig ist, führt an Transfer Learning in diesem Fall kein Weg vorbei. Die von uns trainierten Modelle stellen dennoch einen sehr guten Lernfortschritt zur Analyse architektonischer Trade-Offs (Overfitting und Underfitting) dar.

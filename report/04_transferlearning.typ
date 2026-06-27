@@ -1,6 +1,6 @@
 = Convolutional Neural Network mit Transfer Learning
 
-Auf Grundlage der Datensatzanalyse und der Experimente mit einem Netzwerk von Grund auf wurde deutlich, dass ein kleines Netzwerk erforderlich ist und dass Overfitting das Hauptproblem darstellt. Daher beschränkte sich die Auswahl vortrainierter Netzwerke von Anfang an auf kleine Modelle, die typischerweise für ressourcenbeschränkte Anwendungen vorgesehen sind.
+Auf Grundlage der Datensatzanalyse und der Experimente mit einem von Grund aufgebautem CNN wurde deutlich, dass ein kleines Netzwerk erforderlich ist und Overfitting das Hauptproblem darstellt. Daher beschränkte sich die Auswahl vortrainierter Netzwerke von Anfang an auf kleine Modelle, die typischerweise für ressourcenbeschränkte Anwendungen vorgesehen sind.
 
 == State of the Art Analyse
 

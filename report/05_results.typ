@@ -16,7 +16,7 @@ Unser Einstieg erfolgte über eine flache Netzwerkarchitektur, die bewusst einfa
 )
 
 === Versuch 2
-In Versuch 2 versuchten wir das andere Extrem und implementierten ein sehr tiefes Netzwerk mit vielen Filtern (bis zu 256), um gezielt Overfitting zu erzeugen. Wie erwartet, trennten sich Validierungs- und Trainings-Curves früh auf. Bei der Multilabel-Klassifikation wies der Validierungs-Loss bereits ab Epoche 5 starke Fluktuationen (Bouncing) und einen klaren Aufwärtstrend auf, während die Training-Accuracy über 89 % anstieg. Ähnlich zeigte sich das Bild bei Binär-Klassifikation, welche in der Testphase ebenfalls deutliche Generalisierungsfehler verzeichnete.
+In Versuch 2 haben wir dann das andere Extrem probiert und ein sehr tiefes Netzwerk mit vielen Filtern (bis zu 256) implementiert, um gezielt Overfitting zu erzeugen. Wie erwartet, trennten sich Validierungs- und Trainings-Curves früh auf. Bei der Multilabel-Klassifikation wies der Validierungs-Loss bereits ab Epoche 5 starke Fluktuationen (Bouncing) und einen klaren Aufwärtstrend auf, während die Trainings-Genauigkeit auf über 89 % anstieg. Ein ähnliches Verhalten zeigte sich bei der binären Klassifikation, welche in der Testphase ebenfalls deutliche Generalisierungsfehler verzeichnete.
 
 #figure(
   image("figures/versuch_2_multilabel_classification.png", width: 90%),
@@ -42,7 +42,7 @@ Im dritten Versuch suchten wir die "goldene Mitte", reduzierten die Netzwerktief
 )
 
 === Versuch 4
-Durch die Limitierung der Tiefe auf zwei Hauptblöcke sowie ein angepasstes Maß an Parametern konnten wir das Overfitting im Multilabel-Szenario eliminieren. Es resultierte eine gute Generalisierung mit einer Genauigkeit von 88,8 % auf dem ungesehenen Test-Set. Auch wenn der Validierungs-Loss etwas instabil war, zeigte das Netzwerk eine gute Fähigkeit zur Generalisierung. In der binären Klassifikation erreichte das Netz 86,8 %, zeigte jedoch in den Kurven noch stark instabiles Verhalten am Validierungssatz gegen Ende der Epochen. Das zeigt dass ein Modell mit der gleichen Größe auf den gleichen Datensatz in der Multilabel-Variante deutlich besser generalisiert als in der Binär-Variante, was auf die unterschiedlichen Anforderungen der beiden Aufgaben zurückzuführen sein könnte.
+Durch die Limitierung der Tiefe auf zwei Hauptblöcke sowie ein angepasstes Maß an Parametern konnten wir das Overfitting im Multilabel-Szenario eliminieren. Es resultierte eine gute Generalisierung mit einer Genauigkeit von 88,8 % auf dem ungesehenen Test-Set. Auch wenn der Validierungs-Loss etwas instabil war, zeigte das Netzwerk eine gute Fähigkeit zur Generalisierung. In der binären Klassifikation erreicht das Netz 86,8 %, zeigte jedoch in den Kurven noch stark instabiles Verhalten am Validierungssatz gegen Ende der Epochen. Das zeigt, dass ein Modell mit derselben Größe bei der Multilabel-Klassifikation deutlich besser generalisiert als bei der binären Variante, was auf die unterschiedlichen Anforderungen der beiden Aufgaben zurückzuführen sein könnte.
 
 #figure(
   image("figures/versuch_4_multilabel_classification.png", width: 90%),
