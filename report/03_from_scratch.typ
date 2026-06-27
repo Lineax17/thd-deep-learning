@@ -118,8 +118,7 @@ Der Klassifikationskopf bleibt weitgehend unverändert und verwendet Global Aver
 
 Damit konnten wir das Overfitting reduzieren, aber noch nicht vollständig beheben. Daraufhin war die nächste Idee, die Breite des Modells zu verringern (maximal 64 Neuronen), dafür aber die Tiefe leicht zu vergrößern.
 
-
-== Versuch 4 - Die erfolgreiche finale Architektur
+== Versuch 4 - Auf dem Weg zu einem guten Modell
 
 Anschließend führten wir unseren letzten und erfolgreichsten Versuch durch.
 
