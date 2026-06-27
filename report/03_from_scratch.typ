@@ -14,34 +14,29 @@ Die Anzahl der Filter steigt im Verlauf des Netzwerks von 32 auf 64, wodurch zun
 
 Nach der Feature-Extraktion werden die Feature Maps mittels Flatten in einen Vektor überführt und durch zwei Dense-Schichten klassifiziert. Zur Regularisierung wird eine Dropout-Schicht eingesetzt, um Overfitting zu reduzieren.
 
-```python
-def create_model():
-    model = models.Sequential([
-        layers.Rescaling(1. / 255, input_shape=(IMG_HEIGHT, IMG_WIDTH, 3)),
+#figure(
+  caption: [Model architecture used in experiment 1],
+)[
+  #align(left)[
+    #box(
+      inset: 10pt,
+      stroke: luma(180),
+      radius: 4pt,
+      fill: luma(245),
+    )[
 
-        # Block 1
-        layers.Conv2D(32, (3, 3), activation='relu'),
-        layers.MaxPooling2D((2, 2)),
-
-        # Block 2
-        layers.Conv2D(64, (3, 3), activation='relu'),
-        layers.MaxPooling2D((2, 2)),
-
-        # Block 3
-        layers.Conv2D(64, (3, 3), activation='relu'),
-        layers.MaxPooling2D((2, 2)),
-
-        # Flatten und Klassifikator
-        layers.Flatten(),
-        layers.Dense(64, activation='relu'),
-        layers.Dropout(0.5),
-        layers.Dense(10, activation='softmax')  # 10 Klassen für EuroSAT
-    ])
-    return model
 ```
-#v(-2pt)
-#text(size: 8pt)[Listing 1. Model architecture used in experiment 1]
-#v(8pt)
+Eingabe: RGB-Bild (64×64)
+
+Block 1: Conv2D(32, 3×3, ReLU) → MaxPool(2×2)
+Block 2: Conv2D(64, 3×3, ReLU) → MaxPool(2×2)
+Block 3: Conv2D(64, 3×3, ReLU) → MaxPool(2×2)
+
+Klassifikator:
+Flatten → Dense(64, ReLU) 
+→ Dropout(0.5) → Dense(10, Softmax)
+```
+]]]
 
 Dieses Modell konnte in der Multiclass-Klassifikation bereits eine Accuracy von über 80% erzielen, ohne zu overfitten. Der nächste Schritt bestand daher darin, das Modell zu vergrößern und bewusst Overfitting zu erzeugen. Später stellte sich jedoch heraus, dass dieses Netz für das binäre Klassifikationsproblem bereits ausreichte.
 
@@ -57,59 +52,28 @@ Zusätzlich wird L2-Regularisierung (Weight Decay) in den Faltungsschichten eing
 
 Im Klassifikationskopf wird anstelle eines Flatten-Layers ein Global Average Pooling verwendet. Dies reduziert die Anzahl der Parameter signifikant und verbessert die Generalisierungsfähigkeit. Abschließend erfolgt die Klassifikation über zwei Dense-Schichten mit Dropout-Regularisierung.
 
-```python
-def create_model():
-    weight_decay = 1e-4
+#figure(
+  caption: [Model architecture used in experiment 2],
+)[
+  #align(left)[
+    #box(
+      inset: 10pt,
+      stroke: luma(180),
+      radius: 4pt,
+      fill: luma(245),
+    )[
 
-    model = models.Sequential([
-        layers.Input(shape=(IMG_HEIGHT, IMG_WIDTH, 3)),
-        layers.Rescaling(1.0/255),
-
-        # Block 1: 32 filters
-        layers.Conv2D(32, 3, padding='same', kernel_regularizer=regularizers.l2(weight_decay)),
-        layers.BatchNormalization(),
-        layers.Activation('relu'),
-        layers.Conv2D(32, 3, padding='same', kernel_regularizer=regularizers.l2(weight_decay)),
-        layers.BatchNormalization(),
-        layers.Activation('relu'),
-        layers.MaxPooling2D(2),
-
-        # Block 2: 64 filters
-        layers.Conv2D(64, 3, padding='same', kernel_regularizer=regularizers.l2(weight_decay)),
-        layers.BatchNormalization(),
-        layers.Activation('relu'),
-        layers.Conv2D(64, 3, padding='same', kernel_regularizer=regularizers.l2(weight_decay)),
-        layers.BatchNormalization(),
-        layers.Activation('relu'),
-        layers.MaxPooling2D(2),
-
-        # Block 3: 128 filters
-        layers.Conv2D(128, 3, padding='same', kernel_regularizer=regularizers.l2(weight_decay)),
-        layers.BatchNormalization(),
-        layers.Activation('relu'),
-        layers.Conv2D(128, 3, padding='same', kernel_regularizer=regularizers.l2(weight_decay)),
-        layers.BatchNormalization(),
-        layers.Activation('relu'),
-        layers.MaxPooling2D(2),
-
-        # Block 4: 256 filters
-        layers.Conv2D(256, 3, padding='same', kernel_regularizer=regularizers.l2(weight_decay)),
-        layers.BatchNormalization(),
-        layers.Activation('relu'),
-        layers.MaxPooling2D(2),
-
-        # Classifier
-        layers.GlobalAveragePooling2D(),
-        layers.Dropout(0.5),
-        layers.Dense(128, activation='relu', kernel_regularizer=regularizers.l2(weight_decay)),
-        layers.Dropout(0.5),
-        layers.Dense(10, activation='softmax')
-    ])
-    return model
 ```
-#v(-2pt)
-#text(size: 8pt)[Listing 2. Model architecture used in experiment 2]
-#v(8pt)
+Eingabe: RGB-Bild (64×64)
+
+Block 1: [Conv2D(32, 3×3, same, L2) → BN → ReLU] ×2 → MaxPool(2×2)
+Block 2: [Conv2D(64, 3×3, same, L2) → BN → ReLU] ×2 → MaxPool(2×2)
+Block 3: [Conv2D(128, 3×3, same, L2) → BN → ReLU] ×2 → MaxPool(2×2)
+Block 4: Conv2D(256, 3×3, same, L2) → BN → ReLU → MaxPool(2×2)
+
+Klassifikator: GAP → Dropout(0.5) → Dense(128, ReLU, L2) → Dropout(0.5) → Dense(10, Softmax)
+```
+]]]
 
 Im Vergleich zum ersten Modell weist das zweite Modell eine deutlich tiefere und stärker regularisierte Architektur auf. Durch den Einsatz mehrerer Faltungsschichten pro Block sowie Batch-Normalisierung kann eine robustere Feature-Repräsentation gelernt werden. Zudem reduziert Global Average Pooling die Modellkomplexität im Klassifikationskopf, was insbesondere bei begrenzten Trainingsdaten von Vorteil ist.
 
@@ -121,47 +85,28 @@ Aufgrund der Eigenschaften des Datensatzes führte dieses Modell erwartungsgemä
 
 Für den dritten Versuch haben wir die Architektur aus Versuch 2 genommen, aber die Anzahl der Layer reduziert.
 
-#place(top, float: true, clearance: 15.5pt)[
-  #block(width: 100%)[
-    ```python
-    def create_model():
-        weight_decay = 1e-4
-    
-        model = models.Sequential([
-            layers.Input(shape=(IMG_HEIGHT, IMG_WIDTH, 3)),
-            layers.Rescaling(1.0/255),
-    
-            # Block 1: 32 filters
-            layers.Conv2D(32, 3, padding='same', kernel_regularizer=regularizers.l2(weight_decay)),
-            layers.BatchNormalization(),
-            layers.Activation('relu'),
-            layers.MaxPooling2D(2),
-    
-            # Block 2: 64 filters
-            layers.Conv2D(64, 3, padding='same', kernel_regularizer=regularizers.l2(weight_decay)),
-            layers.BatchNormalization(),
-            layers.Activation('relu'),
-            layers.MaxPooling2D(2),
-    
-            # Block 3: 128 filters
-            layers.Conv2D(128, 3, padding='same', kernel_regularizer=regularizers.l2(weight_decay)),
-            layers.BatchNormalization(),
-            layers.Activation('relu'),
-            layers.MaxPooling2D(2),
-    
-            # Classifier
-            layers.GlobalAveragePooling2D(),
-            layers.Dropout(0.5),
-            layers.Dense(128, activation='relu', kernel_regularizer=regularizers.l2(weight_decay)),
-            layers.Dropout(0.5),
-            layers.Dense(10, activation='softmax')
-        ])
-        return model
-    ```
-    #v(-2pt)
-    #text(size: 8pt)[Listing 3. Model architecture used in experiment 3]
-  ]
-]
+#figure(
+  caption: [Model architecture used in experiment 3],
+)[
+  #align(left)[
+    #box(
+      inset: 10pt,
+      stroke: luma(180),
+      radius: 4pt,
+      fill: luma(245),
+    )[
+
+```
+Eingabe: RGB-Bild (64×64)
+
+Block 1: Conv2D(32, 3×3, same, L2) → BN → ReLU → MaxPool(2×2)
+Block 2: Conv2D(64, 3×3, same, L2) → BN → ReLU → MaxPool(2×2)
+Block 3: Conv2D(128, 3×3, same, L2) → BN → ReLU → MaxPool(2×2)
+
+Klassifikator: GAP → Dropout(0.5) → Dense(128, ReLU, L2) → Dropout(0.5) → Dense(10, Softmax)
+```
+]]]
+
 
 Im Gegensatz zum zweiten Modell besteht jeder Convolutional-Block nur noch aus einer einzelnen Faltungsschicht, gefolgt von Batch-Normalisierung, ReLU-Aktivierung und Max-Pooling. Dadurch wird die Tiefe des Netzwerks deutlich reduziert, was zu einer geringeren Anzahl trainierbarer Parameter führt.
 
@@ -186,47 +131,26 @@ Die Anzahl der Filter steigt von 32 auf 64 an, wodurch eine schrittweise Erweite
 
 Der Klassifikationskopf verwendet Global Average Pooling zur Reduktion der Parameteranzahl, gefolgt von Dense-Schichten mit Dropout-Regularisierung. Die finale Softmax-Schicht ermöglicht die Klassifikation in zehn Klassen.
 
-```python
+#figure(
+  caption: [Model architecture used in experiment 4],
+)[
+  #align(left)[
+    #box(
+      inset: 10pt,
+      stroke: luma(180),
+      radius: 4pt,
+      fill: luma(245),
+    )[
 
-def create_model():
-    weight_decay = 1e-4
 ```
-#pagebreak()
-```python
-    model = models.Sequential([
-        layers.Input(shape=(IMG_HEIGHT, IMG_WIDTH, 3)),
-        layers.Rescaling(1.0/255),
+Eingabe: RGB-Bild (64×64)
 
-        # Block 1: 32 filters
-        layers.Conv2D(32, 3, padding='same', kernel_regularizer=regularizers.l2(weight_decay)),
-        layers.BatchNormalization(),
-        layers.Activation('relu'),
-        layers.Conv2D(32, 3, padding='same', kernel_regularizer=regularizers.l2(weight_decay)),
-        layers.BatchNormalization(),
-        layers.Activation('relu'),
-        layers.MaxPooling2D(2),
+Block 1: [Conv2D(32, 3×3, same, L2) → BN → ReLU] ×2 → MaxPool(2×2)
+Block 2: [Conv2D(64, 3×3, same, L2) → BN → ReLU] ×2 → MaxPool(2×2)
 
-        # Block 2: 64 filters
-        layers.Conv2D(64, 3, padding='same', kernel_regularizer=regularizers.l2(weight_decay)),
-        layers.BatchNormalization(),
-        layers.Activation('relu'),
-        layers.Conv2D(64, 3, padding='same', kernel_regularizer=regularizers.l2(weight_decay)),
-        layers.BatchNormalization(),
-        layers.Activation('relu'),
-        layers.MaxPooling2D(2),
-
-        # Classifier
-        layers.GlobalAveragePooling2D(),
-        layers.Dropout(0.5),
-        layers.Dense(64, activation='relu', kernel_regularizer=regularizers.l2(weight_decay)),
-        layers.Dropout(0.5),
-        layers.Dense(10, activation='softmax')
-    ])
-    return model
+Klassifikator: GAP → Dropout(0.5) → Dense(64, ReLU, L2) → Dropout(0.5) → Dense(10, Softmax)
 ```
-#v(-2pt)
-#text(size: 8pt)[Listing 4. Model architecture used in experiment 4]
-#v(8pt)
+]]]
 
 Mit diesem Modell konnten wir kein Overfitting mehr feststellen. Mit diesem Ansatz stieg die Accuracy von etwa 80 % auf beachtliche 88 % an. Für eine von Grund auf selbst entwickelte CNN-Architektur stellt dies ein äußerst solides Resultat dar, welches eine gute Generalisierungsfähigkeit bei einer ausgewogenen Modellkomplexität für diese Multilabel-Aufgabe belegt.
 
